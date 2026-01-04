@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "PCAP/NGAP/NAS analyzer MCP server"
 requires-python = ">=3.10"
 dependencies = [
-  "mcp>=1.0.0",
+  "mcp>=1.25.0,<2.0.0",
 ]
 
 [project.scripts]
