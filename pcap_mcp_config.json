@@ -1,0 +1,81 @@
+{
+  "allowed_pcap_dirs": [
+    "./"
+  ],
+  "allow_any_pcap_path": false,
+  "tshark_path": "tshark",
+  "capinfos_path": "capinfos",
+  "default_timeout_s": 30,
+  "max_timeline_rows": 5000,
+  "max_detail_bytes": 200000,
+  "export_timeout_s": 300,
+  "output_dir": "./pcap_mcp_outputs",
+  "time_offset_hours": 0,
+  "global_decode_as": [
+    "tcp.port==7777,http2"
+  ],
+  "global_preferences": [
+    "nas-5gs.null_decipher:TRUE"
+  ],
+  "profiles": {
+    "core_5g": {
+      "display_filter": "(((((ngap || http2 || diameter || sip) && !(ipv6.dst == ::1)) && !(ip.addr == 127.0.0.10)) ))",
+      "decode_as": [],
+      "preferences": [
+        "nas-5gs.null_decipher:TRUE"
+      ]
+    },
+    "ngap_nas": {
+      "display_filter": "(ngap || nas-5gs)",
+      "decode_as": [],
+      "preferences": []
+    },
+    "ngap_nas_plain": {
+      "display_filter": "(ngap || nas-5gs)",
+      "decode_as": [],
+      "preferences": [
+        "nas-5gs.null_decipher:TRUE"
+      ]
+    },
+    "http2_sbi": {
+      "display_filter": "http2",
+      "decode_as": [
+        "tcp.port==7777,http2"
+      ],
+      "preferences": []
+    }
+  },
+  "packet_list_columns": {
+    "compact": [
+      {"name": "No", "field": "frame.number"},
+      {"name": "Time", "field": "frame.time_epoch"},
+      {"name": "Source", "field": "_ws.col.Source"},
+      {"name": "Destination", "field": "_ws.col.Destination"},
+      {"name": "Protocol", "field": "_ws.col.Protocol"},
+      {"name": "Length", "field": "frame.len"},
+      {"name": "Info", "field": "_ws.col.Info"}
+    ],
+    "rx_compact": [
+      {"name": "No", "field": "frame.number"},
+      {"name": "Time", "field": "frame.time_epoch"},
+      {"name": "Source", "field": "_ws.col.Source"},
+      {"name": "Destination", "field": "_ws.col.Destination"},
+      {"name": "Protocol", "field": "_ws.col.Protocol"},
+      {"name": "Info", "field": "_ws.col.Info"},
+      {"name": "DIAMETER_SESSION_ID", "field": "diameter.Session-Id"},
+      {"name": "DIAMETER_CMD_CODE", "field": "diameter.cmd.code"},
+      {"name": "DIAMETER_RESULT_CODE", "field": "diameter.Result-Code"},
+      {"name": "DIAMETER_FLOW_DESCRIPTION", "field": "diameter.Flow-Description"}
+    ],
+    "follow_keys": [
+      {"name": "No", "field": "frame.number"},
+      {"name": "Time", "field": "frame.time_epoch"},
+      {"name": "Source", "field": "_ws.col.Source"},
+      {"name": "Destination", "field": "_ws.col.Destination"},
+      {"name": "Protocol", "field": "_ws.col.Protocol"},
+      {"name": "HTTP2_STREAMID", "field": "http2.streamid"},
+      {"name": "DIAMETER_SESSION_ID", "field": "diameter.Session-Id"},
+      {"name": "SIP_CALL_ID", "field": "sip.Call-ID"}
+    ]
+  }
+}
