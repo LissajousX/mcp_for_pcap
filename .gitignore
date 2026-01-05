@@ -39,3 +39,6 @@ htmlcov/
 # Tool outputs
 pcap_mcp_outputs/
 *.tsv
+
+# MCP server pidfile
+.pcap_mcp.pid
