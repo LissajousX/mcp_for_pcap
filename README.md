@@ -28,7 +28,7 @@ License: Apache-2.0
 ./scripts/install.sh
 ```
 
-2)（可选）诊断：
+2) 诊断(可选)：
 
 ```bash
 ./.venv/bin/python -m pcap_mcp doctor
