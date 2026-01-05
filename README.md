@@ -22,15 +22,13 @@ License: Apache-2.0
 
 ## Quick Start（最推荐，新手无脑版）
 
-1) 在仓库根目录运行：
+1) 从仓库根目录：
 
 ```bash
-./scripts/bootstrap.sh
+./scripts/install.sh
 ```
 
-它会尽量自动安装系统依赖（Ubuntu/Debian + sudo/apt 时），然后创建 `.venv` 并安装 Python 依赖。
-
-2) （可选但强烈建议）环境自检：
+2)（可选）诊断：
 
 ```bash
 ./.venv/bin/python -m pcap_mcp doctor
@@ -53,6 +51,25 @@ License: Apache-2.0
   }
 }
 ```
+
+（可选）已自动在 `~/.bashrc` 增加便捷别名：
+- `pcap-mcp-doctor` / `pcap-mcp-uninstall`
+
+## 更新 / 重启
+
+- **配置变更**：调用 `pcap_config_reload`，无需重启。
+- **代码/依赖更新**：
+  - `git pull`
+  - `./scripts/install.sh`
+  - 在 Windsurf MCP 面板尝试 Disable→Enable 以重新执行启动命令（`bash -lc "cd /home/lisa/mcp_for_pcap && ./scripts/run_mcp.sh"`）。若 Enable 未生效，直接删除后重新添加该 MCP 配置，或重启 Windsurf 再 Enable。
+
+## 卸载 / 清理
+
+```bash
+./scripts/uninstall.sh
+```
+
+- 同时清理导出目录：`./scripts/uninstall.sh --all`
 
 ## 配置
 
@@ -81,7 +98,7 @@ License: Apache-2.0
 
 - **找不到 tshark/capinfos**
   - Ubuntu/Debian：`sudo apt-get update && sudo apt-get install -y tshark wireshark-common`
-  - 然后重新跑：`./scripts/bootstrap.sh`
+  - 然后重新跑：`./scripts/install.sh`
 
 ## 文档
 

@@ -8,7 +8,7 @@ Thanks for contributing!
 2) Create a virtualenv and install:
 
 ```bash
-./scripts/bootstrap.sh
+./scripts/install.sh
 ```
 
 ## Development tips

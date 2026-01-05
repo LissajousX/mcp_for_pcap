@@ -24,4 +24,14 @@ if [[ -z "${PCAP_MCP_OUTPUT_DIR:-}" ]]; then
   fi
 fi
 
+# Record PID (best-effort, no stdout output)
+PIDFILE_DEFAULT="${REPO_DIR}/.pcap_mcp.pid"
+PIDFILE="${PCAP_MCP_PIDFILE:-"${PIDFILE_DEFAULT}"}"
+{
+  umask 077
+  echo "$$" >"${PIDFILE}"
+} 2>/dev/null || {
+  echo "Warning: failed to write pidfile: ${PIDFILE}" >&2
+}
+
 exec "${PY}" -m pcap_mcp

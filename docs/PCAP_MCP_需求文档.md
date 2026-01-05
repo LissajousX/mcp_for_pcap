@@ -27,9 +27,15 @@
 
 ## 1.2 快速上手（用法）
 
-- 推荐（新手无脑版）：`./scripts/bootstrap.sh`
+- 推荐（新手无脑版）：`./scripts/install.sh`
 - 自检（强烈建议）：`./.venv/bin/python -m pcap_mcp doctor`
 - 启动服务（推荐用于 Windsurf/stdio）：`./scripts/run_mcp.sh`
+- 更新：
+  - 配置变更：调用 `pcap_config_reload`
+  - 代码/依赖更新：`git pull && ./scripts/install.sh`
+  - 在 Windsurf MCP 面板里 Disable 再 Enable，以重新执行 `bash -lc "cd /home/lisa/mcp_for_pcap && ./scripts/run_mcp.sh"`
+  - 若仍未连上，可删除后重新添加该 MCP 配置或重启 Windsurf
+- 卸载/清理：`./scripts/uninstall.sh`（全清理：`./scripts/uninstall.sh --all`）
 - 手动安装（可选）：`pip install -r requirements.txt`
   - 说明：当前版本的 `requirements.txt` 通过 `-e .` 安装本项目，依赖来自 `pyproject.toml`
 - 配置文件：默认读取仓库根目录 `pcap_mcp_config.json`，也可通过 `PCAP_MCP_CONFIG_JSON` 指定

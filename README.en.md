@@ -25,16 +25,13 @@ Give an agent a PCAP file, and it can troubleshoot in a “Wireshark-like” wor
 1) From the repo root:
 
 ```bash
-./scripts/bootstrap.sh
+./scripts/install.sh
 ```
 
-2) (Optional but recommended) Run diagnostics:
+2) (Optional) install also adds aliases in `~/.bashrc`:
+- `pcap-mcp-doctor` / `pcap-mcp-uninstall`
 
-```bash
-./.venv/bin/python -m pcap_mcp doctor
-```
-
-3) Windsurf MCP config (stdio, **do not print anything to stdout**):
+3) Connect to Windsurf (stdio, **do not print anything to stdout**):
 
 ```json
 {
@@ -51,6 +48,22 @@ Give an agent a PCAP file, and it can troubleshoot in a “Wireshark-like” wor
   }
 }
 ```
+
+## Update / Restart
+
+- **Config changes**: call `pcap_config_reload` (no restart needed).
+- **Code/dependency updates**:
+  - `git pull` (or switch to the latest branch)
+  - run: `./scripts/install.sh`
+  - Try in Windsurf MCP panel: **Disable, then Enable** pcap-mcp to re-run the start command (`bash -lc "cd /home/lisa/mcp_for_pcap && ./scripts/run_mcp.sh"`). If Enable doesn’t relaunch, delete/re-add the MCP entry or reload Windsurf, then Enable.
+
+## Uninstall / Cleanup
+
+```bash
+./scripts/uninstall.sh
+```
+
+- To also remove generated output directories: `./scripts/uninstall.sh --all`
 
 ## Configuration
 
@@ -80,7 +93,7 @@ The most common settings:
 
 - **Missing tshark/capinfos**
   - Ubuntu/Debian: `sudo apt-get update && sudo apt-get install -y tshark wireshark-common`
-  - Then re-run: `./scripts/bootstrap.sh`
+  - Then re-run: `./scripts/install.sh`
 
 ## Docs
 

@@ -63,7 +63,7 @@ pcap-mcp 暴露的能力遵循一个原则：
 1) 一条命令准备环境（尽量自动安装系统依赖 + 创建 `.venv` + 安装 Python 依赖）：
 
 ```bash
-./scripts/bootstrap.sh
+./scripts/install.sh
 ```
 
 2) 自检（建议遇到问题先跑这个）：
@@ -79,6 +79,12 @@ pcap-mcp 暴露的能力遵循一个原则：
 ```
 
 > 注意：stdio 模式下 stdout 必须只输出 JSON-RPC。不要在启动命令里加任何会向 stdout 打印的内容。
+
+4) 更新后重启（Windsurf）：
+
+- 代码/依赖更新：`git pull && ./scripts/install.sh`
+- 在 Windsurf MCP 面板 Disable→Enable，让它重新执行 `bash -lc "cd /home/lisa/mcp_for_pcap && ./scripts/run_mcp.sh"`
+- 若仍未连接，删除后重新添加 MCP 配置或重启 Windsurf
 
 ---
 
