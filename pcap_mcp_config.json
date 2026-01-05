@@ -11,8 +11,13 @@
   "max_detail_bytes": 200000,
   "output_dir": "./pcap_mcp_outputs",
   "time_offset_hours": 0,
-  "global_decode_as": [],
-  "global_preferences": [],
+  "global_decode_as": [
+    "tcp.port==7777,http2"
+  ],
+  "global_preferences": [
+    "nas-5gs.null_decipher:TRUE",
+    "nas-eps.null_decipher:TRUE"
+  ],
   "profiles": {
     "core_5g": {
       "display_filter": "(ngap || http2 || diameter || sip)",
