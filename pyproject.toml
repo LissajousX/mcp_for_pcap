@@ -3,9 +3,24 @@ name = "pcap-mcp"
 version = "0.1.0"
 description = "PCAP/NGAP/NAS analyzer MCP server"
 requires-python = ">=3.10"
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["mcp", "pcap", "tshark", "wireshark", "telecom", "5g", "lte"]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
 dependencies = [
   "mcp>=1.25.0,<2.0.0",
 ]
+
+[tool.setuptools]
+packages = ["pcap_mcp"]
 
 [project.scripts]
 pcap-mcp = "pcap_mcp.server:main"

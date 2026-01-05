@@ -86,14 +86,17 @@ def load_config() -> Config:
     max_detail_bytes = int(file_cfg.get("max_detail_bytes") or os.environ.get("PCAP_MCP_MAX_DETAIL_BYTES", "200000"))
     export_timeout_s = float(file_cfg.get("export_timeout_s") or os.environ.get("PCAP_MCP_EXPORT_TIMEOUT_S", "300"))
 
-    output_dir_raw = str(file_cfg.get("output_dir") or os.environ.get("PCAP_MCP_OUTPUT_DIR", "./pcap_mcp_outputs"))
+    output_dir_raw = str(os.environ.get("PCAP_MCP_OUTPUT_DIR") or file_cfg.get("output_dir") or "./pcap_mcp_outputs")
     output_dir = _resolve_path(output_dir_raw)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        output_dir.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
 
     if "time_offset_hours" in file_cfg:
         time_offset_hours = int(file_cfg.get("time_offset_hours") or 0)
     else:
-        time_offset_hours = int(os.environ.get("PCAP_MCP_TIME_OFFSET_HOURS", "8"))
+        time_offset_hours = int(os.environ.get("PCAP_MCP_TIME_OFFSET_HOURS", "0"))
 
     global_decode_as_raw = file_cfg.get("global_decode_as")
     if isinstance(global_decode_as_raw, list):

@@ -7,6 +7,24 @@ Wireshark 很强，但它也很“手工”——过滤、对齐时序、翻字�
 
 本文会先介绍 MCP 的技术背景，再介绍 pcap-mcp 的设计、功能与一个真实排障案例（SIP 580 / QoS / packet filter 问题链路）。
 
+## 0. 开箱即用（当前版本）
+
+1) 一条命令准备环境（尽量自动安装系统依赖 + 创建 `.venv` + 安装 Python 依赖）：
+
+```bash
+./scripts/bootstrap.sh
+```
+
+2) 自检（推荐遇到问题先跑这个）：
+
+```bash
+./.venv/bin/python -m pcap_mcp doctor
+```
+
+3) 接入 Windsurf（stdio）：用 `./scripts/run_mcp.sh` 启动。
+
+> 注意：stdio 模式下 stdout 必须只输出 JSON-RPC。不要在启动命令里加任何会向 stdout 打印的内容。
+
 ---
 
 ## 1. MCP 技术背景：为什么需要 Model Context Protocol？
@@ -118,9 +136,12 @@ pcap-mcp 使用 JSON 配置（默认 `pcap_mcp_config.json`），重点关注：
 - `allowed_pcap_dirs`：允许分析的抓包目录白名单  
 - `allow_any_pcap_path`：是否允许分析任意绝对路径（默认 false，建议保持关闭）
 - `output_dir`：导出 TSV 的落盘目录
+- `PCAP_MCP_OUTPUT_DIR`：可用环境变量强制覆盖 output_dir（推荐在只读/权限受限环境里使用）
 - `global_decode_as`：全局 decode-as（例如某端口强制按 http2 解码）
 - `profiles`：常用 display filter / decode_as 组合
 - `packet_list_columns`：自定义 Packet List 列模板（用于 Diameter/HTTP2/SIP 跟踪字段）
+
+补充：`./scripts/run_mcp.sh` 会在未指定 `PCAP_MCP_OUTPUT_DIR` 时默认使用可写目录（优先 `XDG_CACHE_HOME`，否则 `/tmp/pcap_mcp_outputs`）。
 
 ---
 

@@ -27,9 +27,15 @@
 
 ## 1.2 快速上手（用法）
 
-- 安装依赖：`pip install -r requirements.txt`
-- 启动服务：`python3 -m pcap_mcp`（或 `pcap-mcp`）
+- 推荐（新手无脑版）：`./scripts/bootstrap.sh`
+- 自检（强烈建议）：`./.venv/bin/python -m pcap_mcp doctor`
+- 启动服务（推荐用于 Windsurf/stdio）：`./scripts/run_mcp.sh`
+- 手动安装（可选）：`pip install -r requirements.txt`
+  - 说明：当前版本的 `requirements.txt` 通过 `-e .` 安装本项目，依赖来自 `pyproject.toml`
 - 配置文件：默认读取仓库根目录 `pcap_mcp_config.json`，也可通过 `PCAP_MCP_CONFIG_JSON` 指定
+  - 建议同时设置：`PCAP_MCP_OUTPUT_DIR=/tmp/pcap_mcp_outputs`（避免目录不可写导致导出失败）
+
+> 注意：stdio 模式下，MCP Server 的 stdout 必须只输出 JSON-RPC。请使用 `run_mcp.sh` 启动，不要在启动命令里加入会向 stdout 打印的内容。
 - 推荐工作流（Wireshark-like）：
   - 先 `pcap_info`
   - 再 `pcap_packet_list` 快速扫一遍“全局列表”
@@ -214,8 +220,9 @@
   - `max_bytes`: int（用于限制抓取 detail 的字节数）
   - `decode_as`: string[]（可选）
   - `profile`: string（可选）
-- **输出（JSON）**：
-  - `matches`: [{ `frame_number`, `snippet` }]
+- **输出（JSON）**（精简示意，实际会包含分页与扫描统计信息）：
+  - `frames_scanned`: int
+  - `matches`: [{ `frame_number`, `truncated`, `snippet` }]
 
 ### 8.6 `pcap_follow`
 
@@ -227,12 +234,16 @@
 - **输入**：
   - `pcap_path`: string
   - `frame_number`: int
-  - `decode_as`: string[]（可选）
+  - `display_filter`: string（可选，会与 follow filter 合并）
   - `profile`: string（可选）
+  - `decode_as`: string[]（可选）
+  - `limit`/`offset`: int（可选，返回 follow 会话的帧列表时分页）
 - **输出（JSON）**：
-  - `follow_type`: string
-  - `key`: string
-  - `display_filter`: string
+  - `follow_type`: string（`http2.streamid` / `diameter.Session-Id` / `sip.Call-ID`）
+  - `follow_key`: string
+  - `follow_display_filter`: string（只包含 follow 条件）
+  - `display_filter`: string（follow + base filter 合并后的最终 filter）
+  - `frames`: int[]（分页）
 
 ### 8.7 `pcap_packet_list`
 
@@ -251,6 +262,7 @@
   - `rows_written`: int
   - `file_size_bytes`: int（可选）
   - `preview_rows`: object[]
+  - `warnings`: string[]（可选）
 
 ### 8.8 `pcap_list_fields`
 
@@ -262,7 +274,8 @@
   - `limit`: int
   - `include_protocols`: bool
 - **输出（JSON）**：
-  - `fields`: object[]
+  - `count`: int
+  - `items`: object[]
 
 ### 8.9 `pcap_config_get` / `pcap_config_reload`
 

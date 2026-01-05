@@ -6,23 +6,30 @@
   "tshark_path": "tshark",
   "capinfos_path": "capinfos",
   "default_timeout_s": 30,
+  "export_timeout_s": 300,
   "max_timeline_rows": 5000,
   "max_detail_bytes": 200000,
-  "export_timeout_s": 300,
   "output_dir": "./pcap_mcp_outputs",
   "time_offset_hours": 0,
-  "global_decode_as": [
-    "tcp.port==7777,http2"
-  ],
-  "global_preferences": [
-    "nas-5gs.null_decipher:TRUE"
-  ],
+  "global_decode_as": [],
+  "global_preferences": [],
   "profiles": {
     "core_5g": {
-      "display_filter": "(((((ngap || http2 || diameter || sip) && !(ipv6.dst == ::1)) && !(ip.addr == 127.0.0.10)) ))",
-      "decode_as": [],
+      "display_filter": "(ngap || http2 || diameter || sip)",
+      "decode_as": [
+        "tcp.port==7777,http2"
+      ],
       "preferences": [
         "nas-5gs.null_decipher:TRUE"
+      ]
+    },
+    "core_4g": {
+      "display_filter": "(s1ap || http2 || diameter || sip)",
+      "decode_as": [
+        "tcp.port==7777,http2"
+      ],
+      "preferences": [
+        "nas-eps.null_decipher:TRUE"
       ]
     },
     "ngap_nas": {
@@ -37,11 +44,28 @@
         "nas-5gs.null_decipher:TRUE"
       ]
     },
+    "s1ap_nas": {
+      "display_filter": "(s1ap || nas-eps)",
+      "decode_as": [],
+      "preferences": []
+    },
+    "s1ap_nas_plain": {
+      "display_filter": "(s1ap || nas-eps)",
+      "decode_as": [],
+      "preferences": [
+        "nas-eps.null_decipher:TRUE"
+      ]
+    },
     "http2_sbi": {
       "display_filter": "http2",
       "decode_as": [
         "tcp.port==7777,http2"
       ],
+      "preferences": []
+    },
+    "diameter": {
+      "display_filter": "diameter",
+      "decode_as": [],
       "preferences": []
     }
   },

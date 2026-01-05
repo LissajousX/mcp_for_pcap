@@ -251,7 +251,9 @@ def pcap_info(pcap_path: str) -> dict[str, Any]:
         info["tshark_version"] = tshark_version(cfg)
         info["has_protocols"] = {
             "sctp": has_any_packet(cfg, p, "sctp"),
+            "s1ap": has_any_packet(cfg, p, "s1ap"),
             "ngap": has_any_packet(cfg, p, "ngap"),
+            "nas_eps": has_any_packet(cfg, p, "nas-eps"),
             "nas_5gs": has_any_packet(cfg, p, "nas-5gs"),
             "pfcp": has_any_packet(cfg, p, "pfcp"),
             "gtpv2": has_any_packet(cfg, p, "gtpv2"),
